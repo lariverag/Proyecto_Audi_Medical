@@ -45,13 +45,13 @@ class PersonasController {
         cedula,
         rol,
         password,
-        fecha_creacion,
         usuario_creador,
+        fecha_creacion,
       } = req.body;
       db.query(
         `INSERT INTO tbl_personas 
-              (id_persona, nombre, apellido, correo, cedula, rol, password, fecha_creacion, usuario_creador) 
-              VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), ?);`,
+              (nombre, apellido, correo, cedula, rol, password, usuario_creador, fecha_creacion) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, NOW());`,
         [
           nombre,
           apellido,
@@ -59,8 +59,8 @@ class PersonasController {
           cedula,
           rol,
           password,
-          fecha_creacion,
           usuario_creador,
+          fecha_creacion,
         ],
         (err, rows) => {
           if (err) {

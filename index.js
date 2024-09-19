@@ -10,6 +10,8 @@ app.get("/", (req, res) => {
   res.send("Hola Mundo");
 });
 
+app.use(cors());
+
 app.use("/personas", personasRoutes);
 app.use("/equipos", equiposRoutes);
 app.use("/detalles", detallesRoutes);

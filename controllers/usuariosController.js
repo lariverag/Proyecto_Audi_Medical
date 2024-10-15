@@ -1,4 +1,5 @@
 const db = require("../database/conexion");
+const bcrypt = require("bcryptjs"); // Importar bcryptjs
 
 class UsuariosController {
   constructor() {}
@@ -47,11 +48,22 @@ class UsuariosController {
         password,
         fecha_creacion,
       } = req.body;
+
+      const hashedPassword = bcrypt.hashSync(password, 8);
+
       db.query(
         `INSERT INTO tbl_usuarios
               (nombre, apellido, correo, cedula, celular, password, fecha_creacion) 
               VALUES (?, ?, ?, ?, ?, ?, NOW());`,
-        [nombre, apellido, correo, cedula, celular, password, fecha_creacion],
+        [
+          nombre,
+          apellido,
+          correo,
+          cedula,
+          celular,
+          hashedPassword,
+          fecha_creacion,
+        ],
         (err, rows) => {
           if (err) {
             res.status(400).send(err);
@@ -65,15 +77,17 @@ class UsuariosController {
       res.status(500).send(err.message);
     }
   }
+
   actualizar(req, res) {
     const { id } = req.params;
     try {
       const { nombre, apellido, correo, cedula, celular, password } = req.body;
+      const hashedPassword = bcrypt.hashSync(password, 8);
       db.query(
         `UPDATE tbl_usuarios 
         SET nombre = ?, apellido = ?, correo = ?, cedula = ?, celular = ?, password = ?
         WHERE id_persona = ? `,
-        [ombre, apellido, correo, cedula, celular, password, id],
+        [nombre, apellido, correo, cedula, celular, hashedPassword, id],
         (err, rows) => {
           if (err) {
             res.status(400).send(err);

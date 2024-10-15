@@ -18,11 +18,11 @@ class ReporteServiciosController {
   }
 
   consultarDetalle(req, res) {
-    const { id } = req.params;
+    const { id_usuario } = req.params;
     try {
       db.query(
-        `SELECT * FROM tbl_reporte_servicio WHERE id_reporte = ?`,
-        [id],
+        `SELECT * FROM tbl_reporte_servicio WHERE id_usuario = ?`,
+        [id_usuario],
         (err, rows) => {
           if (err) {
             res.status(400).send(err);
